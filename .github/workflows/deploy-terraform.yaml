@@ -1,0 +1,26 @@
+name: Deploy with Terraform
+on:
+  push:
+    branches: [main, dev]
+    paths:
+      - 'main.tf'
+
+jobs:
+  terraform:
+    runs-on: self-hosted
+    env:
+      VAULT_ADDR: "https://vault.teokyllc.internal:8200"
+      VAULT_TOKEN: ${{secrets.VAULT_TOKEN}}
+      
+    steps:
+    
+      - uses: actions/checkout@v2
+      
+      - name: Run Terraform
+        run: |
+          terraform init
+          terraform apply --auto-approve \
+            -var="subscription_id=$(vault kv get --field=subscription secrets/azure)" \
+            -var="aad_tenant_id=$(vault kv get --field=tenant secrets/azure)" \
+            -var="client_id=$(vault kv get --field=client-id secrets/azure)" \
+            -var="client_secret=$(vault kv get --field=client-secret secrets/azure)"
