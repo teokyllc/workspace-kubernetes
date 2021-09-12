@@ -6,7 +6,6 @@ locals {
 
 module "network-spoke" {
     source                 = "github.com/teokyllc/terraform-azure-network-spoke"
-    version                = "1.0.10"
     environment_tag        = "DEV"
     spoke_label            = "Engineering"
     hub_vnet_name          = "EastUS2-MGMT-VNET"
