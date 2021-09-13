@@ -36,4 +36,11 @@ jobs:
             -var="registry_password=$(vault kv get --field=password secrets/artifactory)" \
             -var="vault_issuer_path=$(vault kv get --field=issuer-path secrets/vault)" \
             -var="vault_tls_cert_ca=$(vault kv get --field=tls_cert_ca secrets/vault)" \
-            -var="vault_role=$(vault kv get --field=pki-role secrets/vault)"
+            -var="vault_role=$(vault kv get --field=pki-role secrets/vault)" \
+            -var="sso_login_url=$(vault kv get --field=sso-login secrets/argo)" \
+            -var="sso_certificate=$(vault kv get --field=sso-certificate secrets/argo)" \
+            -var="github_app_private_key=$(vault kv get --field=cert secrets/github-app-cert)" \
+            -var="argo_git_app_id=$(vault kv get --field=github-app-id secrets/github)" \
+            -var="argo_git_app_installation_id=$(vault kv get --field=git-app-installation-id secrets/github)" \
+            -var="argo_aad_admin_group_id=$(vault kv get --field=aad-admin-group-id secrets/azure)" \
+            -var="argo_aad_read_only_group_id=$(vault kv get --field=argo_aad_read_only_group_id secrets/azure)"

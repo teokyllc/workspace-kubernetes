@@ -1,6 +1,7 @@
 locals {
   region               = "EastUS2"
   vault_address        = "https://vault.teokyllc.internal:8200"
+  argocd_address       = "argo.teokyllc.internal"
   container_registry   = "ataylor.jfrog.io"
   cert_manager_version = "v1.5.3"
 }
@@ -71,23 +72,19 @@ module "cert-manager" {
   vault_role             = var.vault_role
 }
 
-# module "argocd" {
-#   depends_on                   = [module.cert-manager]
-#   source                       = "app.terraform.io/ANET/argocd/kubernetes"
-#   version                      = "1.0.26"
-#   aks_kubeconfig               = module.aks.aks_kubeconfig
-#   region                       = local.region
-#   argo_fqdn                    = "argo.teokyllc.internal"
-#   vault_token                  = var.vault_token
-#   sso_login_url                = "https://login.microsoftonline.com/5ad90dc5-b02a-4f06-8f90-14d6bccf9282/saml2"
-#   sso_certificate              = var.sso_certificate
-#   #github_app_private_key       = var.github_app_private_key
-#   aks_cluster_name             = module.aks.aks_cluster_name
-#   aks_cluster_rg               = module.aks.aks_rg_name
-#   argo_git_app_id              = "116304"
-#   argo_git_app_installation_id = "17064473"
-#   argo_aad_admin_group_id      = "271497d3-a118-449a-a877-acb02e4fda52"
-#   argo_aad_read_only_group_id  = "fabfdbaf-7b2e-4d8a-ab5f-e4bcc65f3e7f"
-# }
-
-####
+module "argocd" {
+  depends_on                   = [module.cert-manager]
+  source                       = "github.com/teokyllc/terraform-kubernetes-argocd"
+  aks_kubeconfig               = module.aks.aks_kubeconfig
+  region                       = local.region
+  argo_fqdn                    = local.argocd_address
+  sso_login_url                = var.sso_login_url
+  sso_certificate              = var.sso_certificate
+  github_app_private_key       = var.github_app_private_key
+  aks_cluster_name             = module.aks.aks_cluster_name
+  aks_cluster_rg               = module.aks.aks_rg_name
+  argo_git_app_id              = var.argo_git_app_id
+  argo_git_app_installation_id = var.argo_git_app_installation_id
+  argo_aad_admin_group_id      = var.argo_aad_admin_group_id
+  argo_aad_read_only_group_id  = var.argo_aad_read_only_group_id
+}
