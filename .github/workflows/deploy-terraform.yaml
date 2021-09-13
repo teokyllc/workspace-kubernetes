@@ -4,6 +4,7 @@ on:
     branches: [main, dev]
     paths:
       - 'main.tf'
+      - '.github/workflows/deploy-terraform.yaml'
 
 jobs:
   terraform:
@@ -11,6 +12,7 @@ jobs:
     env:
       VAULT_ADDR: "https://vault.teokyllc.internal:8200"
       VAULT_TOKEN: ${{secrets.VAULT_TOKEN}}
+      TF_ACTION: "destroy"  # apply or destroy
       
     steps:
       - uses: actions/checkout@v2
@@ -20,7 +22,7 @@ jobs:
           export ARM_ACCESS_KEY=$(vault kv get --field=sa-access-key secrets/azure)
         
           terraform init
-          terraform apply --auto-approve \
+          terraform $TF_ACTION --auto-approve \
             -var="subscription_id=$(vault kv get --field=subscription secrets/azure)" \
             -var="aad_tenant_id=$(vault kv get --field=tenant secrets/azure)" \
             -var="client_id=$(vault kv get --field=client-id secrets/azure)" \
