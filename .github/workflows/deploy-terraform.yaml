@@ -12,6 +12,7 @@ jobs:
     env:
       VAULT_ADDR: "https://vault.teokyllc.internal:8200"
       VAULT_TOKEN: ${{secrets.VAULT_TOKEN}}
+      CONTAINER_REGISTRY: "ataylor.jfrog.io"
       TF_ACTION: "apply"  # apply or destroy
       
     steps:
@@ -30,6 +31,7 @@ jobs:
             -var="aks_service_principal_id=$(vault kv get --field=client-id secrets/azure)" \
             -var="aks_service_principal_secret=$(vault kv get --field=client-secret secrets/azure)" \
             -var="ssh_pub_key=$(vault kv get --field=public-key secrets/ssh)" \
+            -var="registry_server=$CONTAINER_REGISTRY" \
             -var="registry_username=$(vault kv get --field=username secrets/artifactory)" \
             -var="registry_password=$(vault kv get --field=password secrets/artifactory)" \
             -var="vault_issuer_path=$(vault kv get --field=issuer-path secrets/vault)" \
