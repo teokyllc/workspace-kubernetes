@@ -18,6 +18,21 @@ variable "client_secret" {
     description = "The Azure service principal client secret."
 }
 
+variable "aks_service_principal_id" {
+    type = string
+    description = "The Azure service principal client id used by the AKS service."
+}
+
+variable "aks_service_principal_secret" {
+    type = string
+    description = "The Azure service principal client secret used by the AKS service."
+}
+
+variable "ssh_pub_key" {
+    type = string
+    description = "The SSH public key to access AKS nodes."
+}
+
 # variable "registry_server" {
 #     type = string
 #     description = "The private container register URL."
@@ -33,15 +48,7 @@ variable "client_secret" {
 #     description = "The private container register password."
 # }
 
-# variable "aks_service_principal_id" {
-#     type = string
-#     description = "The Azure service principal client id used by the AKS service."
-# }
 
-# variable "aks_service_principal_secret" {
-#     type = string
-#     description = "The Azure service principal client secret used by the AKS service."
-# }
 
 # variable "vault_token" {
 #     type = string

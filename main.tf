@@ -22,30 +22,29 @@ module "network-spoke" {
     data_subnet            = "10.1.2.0/24"
 }
       
-# module "aks" {
-#   depends_on                   = [module.network-spoke]
-#   source                       = "app.terraform.io/ANET/kubernetes-service/azure"
-#   version                      = "1.0.16"
-#   aks_subnet_name              = module.network-spoke.public_subnet_name
-#   aks_vnet_name                = module.network-spoke.virtual_network_name
-#   aks_vnet_rg                  = module.network-spoke.network_rg_name
-#   cluster_name                 = "test"
-#   dns_prefix                   = "ataylor-test"
-#   region                       = local.region
-#   resource_group               = "${local.region}-${module.network-spoke.spoke_label}-K8S-RG"
-#   node_admin_username          = "allan"
-#   node_admin_ssh_pub_key       = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCnuWk2x0uQntUwDcAoO8mcpRjHBuPAU44WspbZtPAHvwndeSTJvOb8MR2wap+KYm5STGIF9SzGYRx/sunM8MESdUmf6irYfYflLonILiK6TrBubJLy6ndY4T2f59VHz3YR6Pa3uYtNDQmOmGLjOaTyND836eFJkIQn8DnEVPWkeBRjvfnuCvA3eXNQv527sqH54vk9rIv/38NdwARLn+dZH6YhO+1gkQ2WJ83p520bLDrtITjC90x8aQvSCjvKuYB3Fj2o5hpyqHnUj2DmXE4WLC8TlYA2PrDaV+GRwGnWxqmF8xy8xcc2v/7ViRllS75kH1/uiFQIlbckDHXVCvypGTs4F8kJqLa4u3R08nCx3Z6U5xgMbPD1c4nPOnn0nq8QlInDu1+2YghHMRUYXV2IpaRCu962iQUrJAXemIs73jI6OeycptYfoCE70Cqu86tXaiFW++IHN1UCSaF/c0IK8MOfFVbd0W8QSgJNqGUVgozrccVL0sjzOxql2axrsw0="
-#   aks_network_plugin           = "kubenet"
-#   aks_service_cidr             = "10.254.0.0/24"
-#   aks_docker_bridge_cidr       = "10.254.1.2/32"
-#   aks_dns_service_ip           = "10.254.0.254"
-#   aks_pod_cidr                 = "10.255.0.0/16"
-#   cluster_node_count           = "1"
-#   cluster_node_vm_disk_size    = "100"
-#   cluster_node_vm_size         = "Standard_B2s"
-#   aks_service_principal_id     = var.aks_service_principal_id
-#   aks_service_principal_secret = var.aks_service_principal_secret
-# }
+module "aks" {
+  depends_on                   = [module.network-spoke]
+  source                       = "github.com/teokyllc/terraform-azure-kubernetes-service"
+  aks_subnet_name              = module.network-spoke.public_subnet_name
+  aks_vnet_name                = module.network-spoke.virtual_network_name
+  aks_vnet_rg                  = module.network-spoke.network_rg_name
+  cluster_name                 = "test"
+  dns_prefix                   = "ataylor-test"
+  region                       = local.region
+  resource_group               = "${local.region}-${module.network-spoke.spoke_label}-K8S-RG"
+  node_admin_username          = "allan"
+  node_admin_ssh_pub_key       = var.ssh_pub_key
+  aks_network_plugin           = "kubenet"
+  aks_service_cidr             = "10.254.0.0/24"
+  aks_docker_bridge_cidr       = "10.254.1.2/32"
+  aks_dns_service_ip           = "10.254.0.254"
+  aks_pod_cidr                 = "10.255.0.0/16"
+  cluster_node_count           = "1"
+  cluster_node_vm_disk_size    = "100"
+  cluster_node_vm_size         = "Standard_B2s"
+  aks_service_principal_id     = var.aks_service_principal_id
+  aks_service_principal_secret = var.aks_service_principal_secret
+}
     
 # module "cert-manager" {
 #   depends_on             = [module.aks]
