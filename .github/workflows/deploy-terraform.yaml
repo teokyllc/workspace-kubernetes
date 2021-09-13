@@ -19,6 +19,8 @@ jobs:
         run: |
           terraform init
           terraform apply --auto-approve \
+            -var="sa_name=$(vault kv get --field=sa-name secrets/azure)" \
+            -var="sa_rg=$(vault kv get --field=sa-rg secrets/azure)" \
             -var="subscription_id=$(vault kv get --field=subscription secrets/azure)" \
             -var="aad_tenant_id=$(vault kv get --field=tenant secrets/azure)" \
             -var="client_id=$(vault kv get --field=client-id secrets/azure)" \
