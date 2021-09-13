@@ -12,7 +12,7 @@ jobs:
     env:
       VAULT_ADDR: "https://vault.teokyllc.internal:8200"
       VAULT_TOKEN: ${{secrets.VAULT_TOKEN}}
-      TF_ACTION: "destroy"  # apply or destroy
+      TF_ACTION: "apply"  # apply or destroy
       
     steps:
       - uses: actions/checkout@v2
@@ -29,4 +29,9 @@ jobs:
             -var="client_secret=$(vault kv get --field=client-secret secrets/azure)" \
             -var="aks_service_principal_id=$(vault kv get --field=client-id secrets/azure)" \
             -var="aks_service_principal_secret=$(vault kv get --field=client-secret secrets/azure)" \
-            -var="ssh_pub_key=$(vault kv get --field=public-key secrets/ssh)"
+            -var="ssh_pub_key=$(vault kv get --field=public-key secrets/ssh)" \
+            -var="registry_username=$(vault kv get --field=username secrets/artifactory)" \
+            -var="registry_password=$(vault kv get --field=password secrets/artifactory)" \
+            -var="vault_issuer_path=$(vault kv get --field=issuer-path secrets/vault)" \
+            -var="vault_tls_cert_ca=$(vault kv get --field=tls_cert_ca secrets/vault)" \
+            -var="vault_role=$(vault kv get --field=pki-role secrets/vault)"

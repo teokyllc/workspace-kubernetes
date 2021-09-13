@@ -33,27 +33,35 @@ variable "ssh_pub_key" {
     description = "The SSH public key to access AKS nodes."
 }
 
-# variable "registry_server" {
-#     type = string
-#     description = "The private container register URL."
-# }
+variable "registry_server" {
+    type = string
+    description = "The private container register URL."
+}
 
-# variable "registry_username" {
-#     type = string
-#     description = "The private container register username."
-# }
+variable "registry_username" {
+    type = string
+    description = "The private container register username."
+}
 
-# variable "registry_password" {
-#     type = string
-#     description = "The private container register password."
-# }
+variable "registry_password" {
+    type = string
+    description = "The private container register password."
+}
 
+variable "vault_issuer_path" {
+    type = string
+    description = "The private container register password."
+}
 
+variable "vault_tls_cert_ca" {
+    type = string
+    description = "The private container register password."
+}
 
-# variable "vault_token" {
-#     type = string
-#     description = "An admin token to use Vault."
-# }
+variable "vault_role" {
+    type = string
+    description = "The private container register password."
+}
 
 # variable "sso_certificate" {
 #     type = string
