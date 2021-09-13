@@ -4,6 +4,7 @@ locals {
   argocd_address       = "argo.teokyllc.internal"
   container_registry   = "ataylor.jfrog.io"
   cert_manager_version = "v1.5.3"
+  istio_version        = "1.11.2"
 }
 
 module "network-spoke" {
@@ -87,4 +88,11 @@ module "argocd" {
   argo_git_app_installation_id = var.argo_git_app_installation_id
   argo_aad_admin_group_id      = var.argo_aad_admin_group_id
   argo_aad_read_only_group_id  = var.argo_aad_read_only_group_id
+}
+
+module "istio" {
+  depends_on                   = [module.aks]
+  source                       = "github.com/teokyllc/terraform-kubernetes-istio"
+  aks_kubeconfig               = module.aks.aks_kubeconfig
+  istio_version                = local.istio_version
 }
