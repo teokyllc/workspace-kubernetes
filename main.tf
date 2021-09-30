@@ -5,6 +5,7 @@ locals {
   container_registry   = "ataylor.jfrog.io"
   cert_manager_version = "v1.5.3"
   istio_version        = "1.11.2"
+  dns_name             = "teokyllc.internal"
 }
 
 module "network-spoke" {
@@ -95,4 +96,11 @@ module "istio" {
   source                       = "github.com/teokyllc/terraform-kubernetes-istio"
   aks_kubeconfig               = module.aks.aks_kubeconfig
   istio_version                = local.istio_version
+}
+
+module "kube-monitoring" {
+  depends_on                   = [module.aks, module.cert-manager, module.istio]
+  source                       = "https://github.com/teokyllc/terraform-kubernetes-monitoring"
+  aks_kubeconfig               = module.aks.aks_kubeconfig
+  dns_name                     = local.dns_name
 }
