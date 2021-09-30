@@ -13,7 +13,7 @@ jobs:
       VAULT_ADDR: "https://vault.teokyllc.internal:8200"
       VAULT_TOKEN: ${{secrets.VAULT_TOKEN}}
       CONTAINER_REGISTRY: "ataylor.jfrog.io"
-      TF_ACTION: "apply"  # apply or destroy
+      TF_ACTION: "destroy"  # apply or destroy
       
     steps:
       - uses: actions/checkout@v2
