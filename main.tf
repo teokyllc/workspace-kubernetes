@@ -100,7 +100,7 @@ module "istio" {
 
 module "kube-monitoring" {
   depends_on                   = [module.aks, module.cert-manager, module.istio]
-  source                       = "https://github.com/teokyllc/terraform-kubernetes-monitoring"
+  source                       = "github.com/teokyllc/terraform-kubernetes-monitoring"
   aks_kubeconfig               = module.aks.aks_kubeconfig
   dns_name                     = local.dns_name
 }
