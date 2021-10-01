@@ -43,7 +43,7 @@ module "aks" {
   aks_docker_bridge_cidr       = "10.254.1.2/32"
   aks_dns_service_ip           = "10.254.0.254"
   aks_pod_cidr                 = "10.255.0.0/16"
-  cluster_node_count           = "2"
+  cluster_node_count           = "1"
   cluster_node_vm_disk_size    = "100"
   cluster_node_vm_size         = "Standard_B2ms"
   aks_service_principal_id     = var.aks_service_principal_id
